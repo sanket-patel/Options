@@ -138,7 +138,7 @@
 						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
-							$('#result').html('');
+							//$('#result').html('');
 							$('#result').html(msg);
 							//$(document).getElementById('#result').innerHTML = msg;
 						} 
@@ -156,7 +156,7 @@
 						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(),  'strike':$('#strike').val()},
 						success: function(msg) {
-							$('#result').html('');
+							//$('#result').html('');
 							$('#result').html(msg);
 							//$(document).getElementById('#result').innerHTML = msg;
 						} 
@@ -174,7 +174,7 @@
 						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 	'strike':$('#strike').val()},
 						success: function(msg) {
-							$('#result').html('');
+							//$('#result').html('');
 							$('#result').html(msg);
 							//$(document).getElementById('#result').innerHTML = msg;
 						} 
@@ -192,8 +192,8 @@
 						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
-							$('#result').html('');
-							$('#result').replaceWith(msg);						
+							//$('#result').html('');
+							$('#result').html(msg);						
 						}
 					});
 				});

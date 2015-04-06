@@ -29,14 +29,11 @@
 		// array to hold options
 		$options = array();
 		
-		
-		
 		// populate options array
-		echo '<h1>'.$results->num_rows.'</h1>';
 		if ($results->num_rows > 0) {
 			
 			// make there enough dates were selected for performing delta heding simulation
-			if($results->num_rows < 3) {
+			if($results->num_rows < 2) {
 				echo '<br><a class="btn btn-warning">Not enough dates: please select a date further in the future</a>';	
 			}
 			
@@ -100,7 +97,7 @@
 			$table_body = $table_body.'</tbody>';
 			
 			$table = $table_tag.$table_head.$table_body.'</table>';
-			echo $table;
+			echo '<a href="dh.php">Reload Page</a><br><br>'.$table;
 
 		} else {
 		    echo "0 results";
