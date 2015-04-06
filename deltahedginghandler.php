@@ -3,6 +3,7 @@
 	include('analytics/utilities.php');
 	include('analytics/blackscholes.php');
 	include('analytics/eurooption.php');
+	include('analytics/deltahedging.php');
 	
 	if (!empty($_GET['etf']) && !empty($_GET['expiry']) && !empty($_GET['impliedvol']) && !empty($_GET['strike'])) {
 			
@@ -38,9 +39,25 @@
 				$options[] = $option;
 		    }
 			
+			// options have been set, now perform delta hedging
+			$option_pnl = array(); //call(t) - call(t-1)
+			$equity_pnl = array(); //dollardelta(t) - dollardelta(t-1)
+			$cashflows = array();  //(delta(t) - delta(t-1)) * spot(t)
+			$hedge_pnl = array();  //dollardelta(t) + cashflows(t)
+			$daily_pnl = array();  //call(t) - hedge_pnl(t)
+			
+			// perform delta hedging simulation
+			$pnl_array = array($option_pnl, $equity_pnl, $cashflows, $hedge_pnl, $daily_pnl, $options);
+			$pnl_array = perform_delta_hedging($options, $pnl_array);
+			
+			// format output into html table
+			$formatted_output = convert_to_table($options, $pnl_array);
+			
 		} else {
 		    echo "0 results";
 		}
+		
+		
 
 	} else {
 		echo '<br>'.'please enter all values';

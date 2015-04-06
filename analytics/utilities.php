@@ -57,5 +57,10 @@
 		$price = mysqli_fetch_assoc($result);
 		return $price['Price'];
 	}
+	
+	function convert_to_table($options, $pnl_array) {
+		
+		// $option_pnl, $equity_pnl, $cashflow, $hedge_pnl, $daily_pnl
+	}
 
 ?>
