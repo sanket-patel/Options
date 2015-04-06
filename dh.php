@@ -133,7 +133,7 @@
 				$('#impliedvol').change(function() {
 					$.ajax({
 						type: 'GET',
-						url: 'calcimpliedvol.php',
+						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);
@@ -149,7 +149,7 @@
 				$('#expiry').change(function() {
 					$.ajax({
 						type: 'GET',
-						url: 'calcimpliedvol.php',
+						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(),  'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);
@@ -165,7 +165,7 @@
 				$('#myEtf').change(function() {
 					$.ajax({
 						type: 'GET',
-						url: 'calcimpliedvol.php',
+						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 	'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);
@@ -181,7 +181,7 @@
 				$('#strike').change(function() {
 					$.ajax({
 						type: 'GET',
-						url: 'calcimpliedvol.php',
+						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);						

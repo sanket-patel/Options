@@ -25,7 +25,7 @@
 	function get_daycount_fraction($dateFrom, $dateTo) {
 		// calculate day count fraction between two dates
 		$dateFrom = new DateTime($dateFrom);
-		$dateTo = new DateTIme($dateTo);
+		$dateTo = new DateTime($dateTo);
 		$interval = $dateFrom->diff($dateTo);
 		$dcfAct360 = ($interval->days) / 360;
 		
@@ -42,12 +42,18 @@
 		return $date;	
 	}
 	
+	function execute_query($query) {
+		include('config/setup.php');
+		$result = mysqli_query($dbc, $query);
+		return $result;
+	}
+	
 	function get_price_as_of($date, $etf){
 		// get price as of a date
 		include('config/setup.php');
 		$query = "SELECT Price FROM ".$etf." WHERE Date = '".remove_hyphen_from_date($date)."'";
 		#echo $query;
-		$result = mysqli_query($dbc, $query);
+		$result = execute_query($query);
 		$price = mysqli_fetch_assoc($result);
 		return $price['Price'];
 	}

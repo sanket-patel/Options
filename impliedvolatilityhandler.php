@@ -4,7 +4,7 @@
 	include('analytics/blackscholes.php');
 	
 	if (!empty($_GET['etf']) && !empty($_GET['expiry']) && !empty($_GET['premium']) && !empty($_GET['strike'])) {
-				
+			
 		// set variables
 		$etf = $_GET['etf'];
 		$expiry = $_GET['expiry'];
@@ -27,7 +27,7 @@
 		} else {
 			echo '<a class="btn btn-success">Implied Volatility: '.($implied_vol*100).'%'.'</a>';
 		}
-		
+		 
 	} else {
 		echo '<br>'.'please enter all values';
 	}

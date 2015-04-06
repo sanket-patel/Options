@@ -5,13 +5,10 @@
 	
 	<head>
 		<?php
-			include('config/setup.php');
 			include('config/js.php');	
 			include('config/css.php');
 		?>	
 		<title>Implied Volatility</title>
-		
-		
 		
   	</head>
 
@@ -138,7 +135,7 @@
 				$('#premium').change(function() {
 					$.ajax({
 						type: 'GET',
-						url: 'calcimpliedvol.php',
+						url: 'impliedvolatilityhandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);
@@ -154,7 +151,7 @@
 				$('#expiry').change(function() {
 					$.ajax({
 						type: 'GET',
-						url: 'calcimpliedvol.php',
+						url: 'impliedvolatilityhandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(),  'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);
@@ -170,7 +167,7 @@
 				$('#myEtf').change(function() {
 					$.ajax({
 						type: 'GET',
-						url: 'calcimpliedvol.php',
+						url: 'impliedvolatilityhandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 	'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);
@@ -187,7 +184,7 @@
 					$('#strike').val();
 					$.ajax({
 						type: 'GET',
-						url: 'calcimpliedvol.php',
+						url: 'impliedvolatilityhandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);						

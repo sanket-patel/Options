@@ -17,6 +17,12 @@
     	return $nd1 * $spot - $nd2 * $strike * exp(-$rate * $dcf);
 	}
 	
+	function bs_delta($spot, $strike, $rate, $sigma, $dcf) {
+    	$d1 = get_d1($spot, $strike, $rate, $sigma, $dcf);
+    	$nd1 = cdf($d1);
+    	return $nd1;
+	}
+	
 	function newton_raphson($market_price, $strike, $spot, $dcf, $rate) {
     		
     	$tolerance = 0.000000001;
