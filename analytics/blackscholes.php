@@ -1,5 +1,6 @@
 <?php
 
+	
 	function get_d1($spot, $strike, $rate, $sigma, $dcf) {
     	return (log($spot / $strike) + ($rate + (pow($sigma, 2)) / 2) * $dcf) / ($sigma * sqrt($dcf));
 	}
@@ -9,7 +10,7 @@
 	}
 			
 	function bs_price($spot, $strike, $rate, $sigma, $dcf) {
-    	$d1 = get_d1($spot, $strike, $rate, $sigma, $dcf);
+    	$d1 = @get_d1($spot, $strike, $rate, $sigma, $dcf);
     	$d2 = $d1 - $sigma * sqrt($dcf);
     	$nd1 = cdf($d1);
     	$nd2 = cdf($d2);
@@ -18,7 +19,7 @@
 	}
 	
 	function bs_delta($spot, $strike, $rate, $sigma, $dcf) {
-    	$d1 = get_d1($spot, $strike, $rate, $sigma, $dcf);
+    	$d1 = @get_d1($spot, $strike, $rate, $sigma, $dcf);
     	$nd1 = cdf($d1);
     	return $nd1;
 	}

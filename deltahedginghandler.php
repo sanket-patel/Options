@@ -23,13 +23,23 @@
 		$expiry = remove_hyphen_from_date($expiry);
 		#$expiry = '20140111';
 		$query = "SELECT * FROM ".$etf." WHERE Str_to_date(Date, '%Y%m%d') <= Str_to_date('".$expiry."', '%Y%m%d')";
+		
 		$results = execute_query($query);
 		
 		// array to hold options
 		$options = array();
 		
+		
+		
 		// populate options array
+		echo '<h1>'.$results->num_rows.'</h1>';
 		if ($results->num_rows > 0) {
+			
+			// make there enough dates were selected for performing delta heding simulation
+			if($results->num_rows < 3) {
+				echo '<br><a class="btn btn-warning">Not enough dates: please select a date further in the future</a>';	
+			}
+			
 		    
 			while($row = $results->fetch_assoc()) {
 				
@@ -47,12 +57,51 @@
 			$daily_pnl = array();  //call(t) - hedge_pnl(t)
 			
 			// perform delta hedging simulation
-			$pnl_array = array($option_pnl, $equity_pnl, $cashflows, $hedge_pnl, $daily_pnl, $options);
+			$pnl_array = array($option_pnl, $equity_pnl, $cashflows, $hedge_pnl, $daily_pnl);
 			$pnl_array = perform_delta_hedging($options, $pnl_array);
 			
 			// format output into html table
-			$formatted_output = convert_to_table($options, $pnl_array);
+			$columns = array('Date', 'Option', 'Spot', 'Dollar Delta', 'Option PNL', 'Hedge PNL', 'Daily PNL');
 			
+			#echo $formatted_output;
+			$table_tag = '<table class="table table-hover table-condensed">';
+			
+			// table heading
+			$table_head = '<thead><tr>';
+			foreach($columns as $column) {
+				$table_head = $table_head.'<th>'.$column.'</th>';
+			}
+			$table_head = $table_head.'</thead>';
+			
+			// table body
+			$table_body = '<tbody>';
+			$i = 0;
+			foreach($options as $option) {
+				$tr = '<tr>';
+				$tr = $tr.'<td>'.format_as_date($option->spot_date).'</td>';
+				$tr = $tr.'<td>'.format_num((float)$option->price,4).'</td>';							//option price
+				$tr = $tr.'<td>'.format_num((float)$option->spot,4).'</td>';							//spot
+				$tr = $tr.'<td>'.format_num((float)$option->dollar_delta,4).'</td>';					//dollar delta
+				$tr = $tr.'<td>'.format_num((float)$pnl_array[0][$i],4).'</td>';						//option pnl	
+				$tr = $tr.'<td>'.format_num((float)$pnl_array[3][$i],4).'</td>';						//hedge pnl	
+				$tr = $tr.'<td>'.format_num((float)$pnl_array[4][$i],4).'</td>';						//total pnl
+				$tr = $tr.'</tr>';
+				$table_body = $table_body.$tr;
+				$i = $i + 1;
+			}
+			
+			// final rolw
+			$table_body = $table_body.'<tr><td>-</td><td>-</td><td>-</td><td>-</td>';
+			$table_body = $table_body.'<td><strong>'.format_num(array_sum($pnl_array[0]),4).'</strong></td>';	// sum of option pnl
+			$table_body = $table_body.'<td><strong>'.format_num(array_sum($pnl_array[3]),4).'</strong></td>';	// sum of hedge pnl
+			$table_body = $table_body.'<td><strong>'.format_num(array_sum($pnl_array[4]),4).'</strong></td>';	// sum of daily pnl
+			$table_body = $table_body.'</tr>';
+			
+			$table_body = $table_body.'</tbody>';
+			
+			$table = $table_tag.$table_head.$table_body.'</table>';
+			echo $table;
+
 		} else {
 		    echo "0 results";
 		}

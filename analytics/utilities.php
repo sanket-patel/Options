@@ -32,8 +32,17 @@
 		return (float)$dcfAct360;
 	}
 	
+	function format_as_date($dt) {
+		$dt = new DateTime($dt);
+		return $dt->format('m/d/Y');
+	}
+	
 	function pdf($x) {
 		return 1 / (sqrt(2 * pi()) * exp(-(pow($x, 2) / 2)));
+	}
+	
+	function format_num($num, $digits) {
+		return number_format($num, $digits);
 	}
 	
 	function remove_hyphen_from_date($date) {
@@ -57,10 +66,6 @@
 		$price = mysqli_fetch_assoc($result);
 		return $price['Price'];
 	}
-	
-	function convert_to_table($options, $pnl_array) {
-		
-		// $option_pnl, $equity_pnl, $cashflow, $hedge_pnl, $daily_pnl
-	}
+
 
 ?>

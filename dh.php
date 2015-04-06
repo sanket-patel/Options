@@ -86,9 +86,11 @@
 							<a class="btn btn-info"><span id="expiryEntered">DATE</span></a>
 							<a class="btn btn-info"><span id="impliedVolEntered">PREMIUM</span></a>
 							<a class="btn btn-info"><span id="strikeEntered">STRIKE</span></a>
-							<a class="btn btn-success"><span id="result">IMPLIED VOL%</span></a>
+							<!---<a class="btn btn-success"><span id="result">IMPLIED VOL%</span></a> --->
+							<div id="result"></span>
 							<!--- <div id="result2"></div> --->
 						</div> <!--- END panel-body --->
+						
 				</div> <!--- END panel for output --->
 			</div> <!--- END ngApp --->
 		</div> <!--- END container --->
@@ -136,7 +138,9 @@
 						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
+							$('#result').html('');
 							$('#result').html(msg);
+							//$(document).getElementById('#result').innerHTML = msg;
 						} 
 					});
 				});
@@ -152,7 +156,9 @@
 						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(),  'strike':$('#strike').val()},
 						success: function(msg) {
+							$('#result').html('');
 							$('#result').html(msg);
+							//$(document).getElementById('#result').innerHTML = msg;
 						} 
 					});
 				});
@@ -168,7 +174,9 @@
 						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 	'strike':$('#strike').val()},
 						success: function(msg) {
+							$('#result').html('');
 							$('#result').html(msg);
+							//$(document).getElementById('#result').innerHTML = msg;
 						} 
 					});
 				});
@@ -184,7 +192,8 @@
 						url: 'deltahedginghandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
-							$('#result').html(msg);						
+							$('#result').html('');
+							$('#result').replaceWith(msg);						
 						}
 					});
 				});
