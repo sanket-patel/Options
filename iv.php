@@ -90,10 +90,10 @@
 				<div class="panel-heading">Implied Volatility</div>
 					<div class="panel-body inline-block">
 						<a class="btn btn-info"><span id="etfSelected">EFA</span></a>
-						<a class="btn btn-info"><span id="dateEntered">DATE</span></a>
+						<a class="btn btn-info"><span id="expiryEntered">DATE</span></a>
 						<a class="btn btn-info"><span id="premiumEntered">PREMIUM</span></a>
 						<a class="btn btn-info"><span id="strikeEntered">STRIKE</span></a>
-						<a class="btn btn-success"><span id="result">IMPLIED VOL%</span></a>
+						<span id="result"><a class="btn btn-success">IMPLIED VOL%</a></span>
 						<!--- <div id="result2"></div> --->
 					</div> <!--- END panel-body --->
 			</div> <!--- END panel for output --->
@@ -184,6 +184,7 @@
 			// call php
 			$(document).ready(function() {
 				$('#strike').change(function() {
+					$('#strike').val();
 					$.ajax({
 						type: 'GET',
 						url: 'calcimpliedvol.php',
