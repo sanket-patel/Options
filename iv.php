@@ -10,6 +10,9 @@
 			include('config/css.php');
 		?>	
 		<title>Implied Volatility</title>
+		
+		
+		
   	</head>
 
 	<body>
@@ -51,17 +54,17 @@
   						</select>
   						<input type='hidden' id='myhiddenEtf' value=''>
 					</div> <!--- END panel-body --->
-			</div> <!--- END panel --->
+			</div> <!--- END panel for etf dropdown--->
 			
 			<div class="panel panel-default">
 				<div class="panel-heading"><span class="label label-default label-as-badge">2</span>&nbsp&nbspSelect option expiry</div>
 					<div class="panel-body">
 						<div class="input-append date">
-							<input type="date" id="premiumDate" name="premiumDate" />
+							<input type="date" id="expiry" name="expiry" />
 							<span class="add-on"><i class="icon-th"></i></span>
 						</div> <!--- END date input --->
 					</div> <!--- END panel-body --->
-			</div> <!--- END panel --->
+			</div> <!--- END panel for expiry--->
 			
 			<div class="panel panel-default">
 				<div class="panel-heading"><span class="label label-default label-as-badge">3</span>&nbsp&nbspEnter option premium</div>
@@ -71,7 +74,7 @@
 							<span class="add-on"><i class="icon-th"></i></span>
 						</div> <!--- END date input --->
 					</div> <!--- END panel-body --->
-			</div> <!--- END panel --->
+			</div> <!--- END panel for premium --->
 			
 			<div class="panel panel-default">
 				<div class="panel-heading"><span class="label label-default label-as-badge">4</span>&nbsp&nbspEnter a strike</div>
@@ -81,45 +84,26 @@
 							<span class="add-on"><i class="icon-th"></i></span>
 						</div> <!--- END date input --->
 					</div> <!--- END panel-body --->
-			</div> <!--- END panel --->
+			</div> <!--- END panel for strike --->
 			
 			<div class="panel panel-info">
 				<div class="panel-heading">Implied Volatility</div>
 					<div class="panel-body inline-block">
-						
 						<a class="btn btn-info"><span id="etfSelected">EFA</span></a>
 						<a class="btn btn-info"><span id="dateEntered">DATE</span></a>
 						<a class="btn btn-info"><span id="premiumEntered">PREMIUM</span></a>
 						<a class="btn btn-info"><span id="strikeEntered">STRIKE</span></a>
 						<a class="btn btn-success"><span id="result">IMPLIED VOL%</span></a>
-						<!---
-						<span class="label label-info" id="etfSelected">EFA</span>
-						<span class="label label-info" id="dateEntered">DATE</span>
-						<span class="label label-info" id="premiumEntered">PREMIUM</span>
-						<span class="label label-info" id="strikeEntered">STRIKE</span>
-						<span class="label label-success" id="result">IMPLIED VOL%</span>
-						--->
-						<div id="result2"></div>
+						<!--- <div id="result2"></div> --->
 					</div> <!--- END panel-body --->
-			</div> <!--- END panel --->
+			</div> <!--- END panel for output --->
 		
 		</div> <!--- END container --->
 		
-		<!---
-		<script>    
-			function setEFA() {
-				//jQuery('#e").val("EFA");
-				jQuery('#myhiddenEtf').val(x);
-				jQuery('#etfSelected').text("EFA");
-			}
-		</script>
-		--->
-
-		
 		<script>
 			// expiry changes
-			$('#premiumDate').change(function() {
-				jQuery('#dateEntered').text($('#premiumDate').val());
+			$('#expiry').change(function() {
+				jQuery('#expiryEntered').text($('#expiry').val());
 				});
 		</script>
 		
@@ -155,7 +139,7 @@
 					$.ajax({
 						type: 'GET',
 						url: 'calcimpliedvol.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#premiumDate').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
+						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);
 						} 
@@ -167,11 +151,11 @@
 		<script>
 			// call php
 			$(document).ready(function() {
-				$('#premiumDate').change(function() {
+				$('#expiry').change(function() {
 					$.ajax({
 						type: 'GET',
 						url: 'calcimpliedvol.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#premiumDate').val(), 'premium':$('#premium').val(),  'strike':$('#strike').val()},
+						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(),  'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);
 						} 
@@ -187,7 +171,7 @@
 					$.ajax({
 						type: 'GET',
 						url: 'calcimpliedvol.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#premiumDate').val(), 'premium':$('#premium').val(), 	'strike':$('#strike').val()},
+						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 	'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);
 						} 
@@ -203,7 +187,7 @@
 					$.ajax({
 						type: 'GET',
 						url: 'calcimpliedvol.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#premiumDate').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
+						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);						
 						}
@@ -211,6 +195,7 @@
 				});
 			});
 		</script>
-  
-	</body>  
+
+	</body> <!--- END BODY --->  
+	
 </html>

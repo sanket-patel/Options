@@ -7,6 +7,9 @@
 <!-- Latest compiled and minified JavaScript  (twitter bootstrap javascript)-->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
+<!--- anglarJS --->
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
 
 <script>
 	function setIWM() {
