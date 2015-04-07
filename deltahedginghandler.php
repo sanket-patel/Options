@@ -73,6 +73,7 @@
 			// table body
 			$table_body = '<tbody>';
 			$i = 0;
+			
 			foreach($options as $option) {
 				$tr = '<tr>';
 				$tr = $tr.'<td>'.format_as_date($option->spot_date).'</td>';
@@ -87,6 +88,21 @@
 				$i = $i + 1;
 			}
 			
+			/*
+			foreach($options as $option) {
+				$tr = '<tr>';
+				$tr = $tr.'<td>'.format_as_date($option->spot_date).'</td>';
+				$tr = $tr.'<td>'.format_num((float)$option->price,4).'</td>';							//option price
+				$tr = $tr.'<td>'.format_num((float)$option->spot,4).'</td>';							//spot
+				$tr = $tr.'<td>'.format_num((float)$option->dollar_delta,4).'</td>';					//dollar delta
+				$tr = $tr.'<td>'.format_num((float)$pnl_array[0][$i],4).'</td>';						//option pnl	
+				$tr = $tr.'<td>'.format_num((float)$pnl_array[3][$i],4).'</td>';						//hedge pnl	
+				$tr = $tr.'<td>'.format_num((float)$pnl_array[4][$i],4).'</td>';						//total pnl
+				$tr = $tr.'</tr>';
+				$table_body = $table_body.$tr;
+				$i = $i + 1;
+			}
+			*/
 			// final rolw
 			$table_body = $table_body.'<tr><td>-</td><td>-</td><td>-</td><td>-</td>';
 			$table_body = $table_body.'<td><strong>'.format_num(array_sum($pnl_array[0]),4).'</strong></td>';	// sum of option pnl
