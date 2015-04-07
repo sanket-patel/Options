@@ -23,15 +23,15 @@
 		for ($t = 1; $t < $num_options; $t++) {
 				
 			// get options pnl
-			$opt_pnl = (float)($options[$t]->price - $options[$t-1]->price);
+			$opt_pnl = (float)-($options[$t]->price - $options[$t-1]->price);  //we are short the call
 			// get equity pnl
 			$eq_pnl = $options[$t]->dollar_delta -  $options[$t-1]->dollar_delta;
 			// get cashflow from rebalancing the delta
-			$cashflow = -$options[$t]->spot * ($options[$t]->delta -  $options[$t-1]->delta);
+			$cashflow = $options[$t]->spot * ($options[$t]->delta -  $options[$t-1]->delta);
 			// get total hedge pnl
-			$hedge = 	$eq_pnl + $cashflow;
+			$hedge = -($eq_pnl + $cashflow);
 			// get total pnl (option + hedge)
-			$total_pnl = $opt_pnl - $hedge;
+			$total_pnl = $opt_pnl + $hedge;
 
 			$option_pnl[] = (float)$opt_pnl;		
 			$equity_pnl[] = (float)$eq_pnl;

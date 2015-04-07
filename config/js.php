@@ -10,6 +10,9 @@
 <!--- anglarJS --->
 <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 
+<!--- Google Charts --->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
 
 <script>
 	function setIWM() {

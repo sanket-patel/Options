@@ -11,6 +11,7 @@
 		$etf = $_GET['etf'];
 		$expiry = $_GET['expiry'];
 		$impliedvol = $_GET['impliedvol'];
+		$impliedvol = ((float)str_replace('%','',$impliedvol)) / 100;
 		$strike = $_GET['strike'];
 		
 		// set additional variables
@@ -37,7 +38,6 @@
 				echo '<br><a class="btn btn-warning">Not enough dates: please select a date further in the future</a>';	
 			}
 			
-		    
 			while($row = $results->fetch_assoc()) {
 				
 		    	$spot_date = $row["Date"];
@@ -61,7 +61,7 @@
 			$columns = array('Date', 'Option', 'Spot', 'Dollar Delta', 'Option PNL', 'Hedge PNL', 'Daily PNL');
 			
 			#echo $formatted_output;
-			$table_tag = '<table class="table table-hover table-condensed">';
+			$table_tag = '<table class="table table-hover table-condensed table-striped">';
 			
 			// table heading
 			$table_head = '<thead><tr>';
@@ -102,7 +102,6 @@
 		} else {
 		    echo "0 results";
 		}
-		
 		
 
 	} else {
