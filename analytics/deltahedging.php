@@ -38,12 +38,10 @@
 			$cashflows[] = (float)$cashflow;
 			$hedge_pnl[] = 	(float)$hedge;
 			$daily_pnl[] = (float)$total_pnl;
-			
-			#echo $t.'---'.$opt_pnl.'---'.$eq_pnl.'---'.$cashflow.'---'.$hedge.'---'.$total_pnl.'<br>';		
+				
 		}
 		
 		// collect the results
-
 		return array($option_pnl, $equity_pnl, $cashflow, $hedge_pnl, $daily_pnl);
 	}
 
