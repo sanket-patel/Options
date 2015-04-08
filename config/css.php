@@ -17,3 +17,15 @@
 	    padding: auto;
 	}
 </style>
+
+<style>
+	#popup {
+    	margin-top:10px;
+    	padding:50px;
+    	border: 1px solid lightgrey;
+	}
+
+	#popup_static {
+    	margin-top: 10px;
+	}
+</style>

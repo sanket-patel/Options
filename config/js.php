@@ -13,6 +13,9 @@
 <!--- Google Charts --->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
+<!--- <script src="http://code.jquery.com/jquery-1.9.0.js"></script> --->
+<!--- <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script> --->
+
 
 <script>
 	function setIWM() {

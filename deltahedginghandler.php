@@ -22,13 +22,18 @@
 		
 		// get data from db
 		$expiry = remove_hyphen_from_date($expiry);
+		$expiry = format_expiry($expiry);
 		#$expiry = '20140111';
 		$query = "SELECT * FROM ".$etf." WHERE Str_to_date(Date, '%Y%m%d') <= Str_to_date('".$expiry."', '%Y%m%d')";
-		
 		$results = execute_query($query);
 		
 		// array to hold options
 		$options = array();
+		
+		echo 'GOT INTO THE FUNCTION';
+		echo $etf.'<br>'.$expiry.'<br>'.$impliedvol.'<br>'.$strike.'<br>'.$dcf.'<br>';
+		echo $query.'<br>';
+		echo $results->num_rows; 
 		
 		// populate options array
 		if ($results->num_rows > 0) {

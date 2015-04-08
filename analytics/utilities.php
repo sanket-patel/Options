@@ -32,6 +32,11 @@
 		return (float)$dcfAct360;
 	}
 	
+	function format_expiry($expiry) {
+		list($month, $day, $year) = explode('/', $expiry);
+		return $year.$month.$day;
+	}
+	
 	function format_as_date($dt) {
 		$dt = new DateTime($dt);
 		return $dt->format('m/d/Y');

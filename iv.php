@@ -10,6 +10,12 @@
 		?>	
 		<title>Implied Volatility</title>
 		
+		<script type="text/javascript">
+			$(function(){
+				$('.datepicker').datepicker({showAnim: "fadeIn"});
+			})
+		</script>
+		
   	</head>
 
 	<body>
@@ -35,53 +41,62 @@
 				Enter all the values below then press ENTER
 			</div>
 			
-			<div class="panel panel-default">
-				<div class="panel-heading"><span class="label label-default label-as-badge">1</span>&nbsp&nbspSelect an ETF</div>
-					<div class="panel-body">
-						<!---
-						<ul class="nav nav-pills" role="tablist" id="etfs">
-							<li role="presentation"><a  onclick="setEFA()">EFA</a></li>
-							<li role="presentation"><a href="#">IWM</a></li>
-							<li role="presentation"><a href="#">SPY</a></li>
-						</ul> ---><!--- END ul --->
-						<select class="selectpicker" id="myEtf">
-				    		<option>EFA</option>
-				    		<option>IWM</option>
-					    	<option>SPY</option>
-  						</select>
-  						<input type='hidden' id='myhiddenEtf' value=''>
-					</div> <!--- END panel-body --->
-			</div> <!--- END panel for etf dropdown--->
+			<div data-toggle="tooltip" title="Select an ETF from the dropdown">
+				<div class="panel panel-default">
+					<div class="panel-heading"><span class="label label-default label-as-badge">1</span>&nbsp&nbspSelect an ETF</div>
+						<div class="panel-body">
+							<!---
+							<ul class="nav nav-pills" role="tablist" id="etfs">
+								<li role="presentation"><a  onclick="setEFA()">EFA</a></li>
+								<li role="presentation"><a href="#">IWM</a></li>
+								<li role="presentation"><a href="#">SPY</a></li>
+							</ul> ---><!--- END ul --->
+							<select class="selectpicker" id="myEtf">
+					    		<option>EFA</option>
+					    		<option>IWM</option>
+						    	<option>SPY</option>
+	  						</select>
+	  						<input type='hidden' id='myhiddenEtf' value=''>
+						</div> <!--- END panel-body --->
+				</div> <!--- END panel for etf dropdown--->
+			</div>
 			
-			<div class="panel panel-default">
-				<div class="panel-heading"><span class="label label-default label-as-badge">2</span>&nbsp&nbspSelect option expiry</div>
-					<div class="panel-body">
-						<div class="input-append date">
-							<input type="date" id="expiry" name="expiry" />
-							<span class="add-on"><i class="icon-th"></i></span>
-						</div> <!--- END date input --->
-					</div> <!--- END panel-body --->
-			</div> <!--- END panel for expiry--->
+			<div data-toggle="tooltip" title="Enter a date as mm/dd/yyyy or pick one from the date picker">
+				<div class="panel panel-default">
+					<div class="panel-heading"><span class="label label-default label-as-badge">2</span>&nbsp&nbspSelect option expiry</div>
+						<div class="panel-body">
+							<div class="input-append date">
+								<!--- type-"date" is currently not supported in firefox and ie --->
+								<!--- input type="date" id="expiry" name="expiry" /> --->
+								<input class="datepicker" id="expiry" name="expiry" placeholder="01/02/2014" />
+								<span class="add-on"><i class="icon-th"></i></span>
+							</div> <!--- END date input --->
+						</div> <!--- END panel-body --->
+				</div> <!--- END panel for expiry--->
+			</div>
 			
-			<div class="panel panel-default">
-				<div class="panel-heading"><span class="label label-default label-as-badge">3</span>&nbsp&nbspEnter option premium</div>
-					<div class="panel-body">
-						<div class="input-append date">
-							<input type="text" id="premium" name="premium">
-							<span class="add-on"><i class="icon-th"></i></span>
-						</div> <!--- END date input --->
-					</div> <!--- END panel-body --->
-			</div> <!--- END panel for premium --->
+			<div data-toggle="tooltip" title="Enter an option premium, for example 10.24">
+				<div class="panel panel-default">
+					<div class="panel-heading"><span class="label label-default label-as-badge">3</span>&nbsp&nbspEnter option premium</div>
+						<div class="panel-body">
+							<div class="input-append date">
+								<input type="text" id="premium" name="premium">
+								<span class="add-on"><i class="icon-th"></i></span>
+							</div> <!--- END date input --->
+						</div> <!--- END panel-body --->
+				</div> <!--- END panel for premium --->
+			</div>
 			
-			<div class="panel panel-default">
-				<div class="panel-heading"><span class="label label-default label-as-badge">4</span>&nbsp&nbspEnter a strike</div>
-					<div class="panel-body">
-						<div class="input-append date">
-							<input type="text" id="strike" name="strike">
-							<span class="add-on"><i class="icon-th"></i></span>
-						</div> <!--- END date input --->
-					</div> <!--- END panel-body --->
-			</div> <!--- END panel for strike --->
+			<div data-toggle="tooltip" title="Enter an strike, for example 50, then press TAB if you are using FireFox or IE or press ENTER if you are using Chrome">
+				<div class="panel panel-default">
+					<div class="panel-heading"><span class="label label-default label-as-badge">4</span>&nbsp&nbspEnter a strike</div>
+						<div class="panel-body">
+							<div class="input-append date">
+								<input type="text" id="strike" name="strike">
+								<span class="add-on"><i class="icon-th"></i></span>
+							</div> <!--- END date input --->
+						</div> <!--- END panel-body --->
+				</div> <!--- END panel for strike --->
 			
 			<div class="panel panel-info">
 				<div class="panel-heading">Implied Volatility</div>
@@ -192,6 +207,26 @@
 					});
 				});
 			});
+		</script>
+		
+		<script>
+			$('[data-toggle="tooltip"]').tooltip({
+			    'placement': 'top'
+			});
+			
+			$('[data-toggle="popover"]').popover({
+			    trigger: 'hover',
+			        'placement': 'top'
+			});
+			
+			
+			$('#popup_static').tooltip({
+			    'show': true,
+			        'placement': 'bottom',
+			        'title': "Please remember to..."
+			});
+			
+			$('#popup_static').tooltip('show');
 		</script>
 
 	</body> <!--- END BODY --->  
