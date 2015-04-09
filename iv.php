@@ -10,9 +10,15 @@
 		?>	
 		<title>Implied Volatility</title>
 		
-		<script type="text/javascript">
+		<!--- using the jQuery datepicker element because <input type="date"> is an HTML5 element that is
+			currently only supported in Chrome and Safari --->
+		<<script type="text/javascript">
 			$(function(){
-				$('.datepicker').datepicker({showAnim: "fadeIn"});
+				$('.datepicker').datepicker({
+					showAnim: "fadeIn",
+					changeMonth: true,
+            		changeYear: true
+        		}).datepicker("setDate", "0");
 			})
 		</script>
 		
@@ -22,6 +28,7 @@
 
 		<div class="container">
 			
+			<!--- navigation panel --->
 			<nav class="navbar navbar-default">
 				<div class="container-fluid">
 					<div class="navbar-header">
@@ -36,30 +43,16 @@
 				</div><!--- END conatiner-fluid --->
 			</nav> <!--- END navbar --->
 			
+			<!--- dissmissible banner at top of page --->
 			<div class="alert alert-warning alert-info" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				Enter all the values below then press ENTER
 			</div>
 			
-			<div data-toggle="tooltip" title="Select an ETF from the dropdown">
-				<div class="panel panel-default">
-					<div class="panel-heading"><span class="label label-default label-as-badge">1</span>&nbsp&nbspSelect an ETF</div>
-						<div class="panel-body">
-							<!---
-							<ul class="nav nav-pills" role="tablist" id="etfs">
-								<li role="presentation"><a  onclick="setEFA()">EFA</a></li>
-								<li role="presentation"><a href="#">IWM</a></li>
-								<li role="presentation"><a href="#">SPY</a></li>
-							</ul> ---><!--- END ul --->
-							<select class="selectpicker" id="myEtf">
-					    		<option>EFA</option>
-					    		<option>IWM</option>
-						    	<option>SPY</option>
-	  						</select>
-	  						<input type='hidden' id='myhiddenEtf' value=''>
-						</div> <!--- END panel-body --->
-				</div> <!--- END panel for etf dropdown--->
-			</div>
+			<?php 
+				#import html for the etf drop down
+				include('templates/etfdropdown.php');
+			?>
 			
 			<div data-toggle="tooltip" title="Enter a date as mm/dd/yyyy or pick one from the date picker">
 				<div class="panel panel-default">
@@ -80,7 +73,7 @@
 					<div class="panel-heading"><span class="label label-default label-as-badge">3</span>&nbsp&nbspEnter option premium</div>
 						<div class="panel-body">
 							<div class="input-append date">
-								<input type="text" id="premium" name="premium">
+								<input type="text" id="premium" name="premium" placeholder="20.0">
 								<span class="add-on"><i class="icon-th"></i></span>
 							</div> <!--- END date input --->
 						</div> <!--- END panel-body --->
@@ -92,12 +85,13 @@
 					<div class="panel-heading"><span class="label label-default label-as-badge">4</span>&nbsp&nbspEnter a strike</div>
 						<div class="panel-body">
 							<div class="input-append date">
-								<input type="text" id="strike" name="strike">
+								<input type="text" id="strike" name="strike" placeholder="60.0">
 								<span class="add-on"><i class="icon-th"></i></span>
 							</div> <!--- END date input --->
 						</div> <!--- END panel-body --->
 				</div> <!--- END panel for strike --->
 			
+			<!--- output section --->
 			<div class="panel panel-info">
 				<div class="panel-heading">Implied Volatility</div>
 					<div class="panel-body inline-block">
@@ -105,13 +99,14 @@
 						<a class="btn btn-info"><span id="expiryEntered">DATE</span></a>
 						<a class="btn btn-info"><span id="premiumEntered">PREMIUM</span></a>
 						<a class="btn btn-info"><span id="strikeEntered">STRIKE</span></a>
+						<!--- results will be written here --->
 						<span id="result"><a class="btn btn-success">IMPLIED VOL%</a></span>
-						<!--- <div id="result2"></div> --->
 					</div> <!--- END panel-body --->
 			</div> <!--- END panel for output --->
 		
 		</div> <!--- END container --->
-		
+						 
+		<!--- dynamically update the EXPIRY label in the output section when the input is changed --->
 		<script>
 			// expiry changes
 			$('#expiry').change(function() {
@@ -119,6 +114,7 @@
 				});
 		</script>
 		
+		<!--- dynamically update the ETF label in the output section when the input is changed --->
 		<script>
 			// premium changes
 			$('#premium').change(function() {
@@ -126,6 +122,7 @@
 				});
 		</script>
 		
+		<!--- dynamically update the STRIKE label in the output section when the input is changed --->
 		<script>
 			// strike
 			$('#strike').change(function() {
@@ -133,17 +130,20 @@
 				});
 		</script>
 		
+		<!--- dynamically update the ETF label in the output section when drop down changes --->
 		<script type='text/javascript'>
 			// etfs changes
 			$(function() {
 			    $('#myEtf').change(function() {
 			        var x = $(this).val();
-			        $('#myhiddenEtf').val(x);
+			        $('#hiddenEtf').val(x);
 			        jQuery('#etfSelected').text($('#myEtf').val());
 			    });
 			});
 			</script>
 		
+		<!--- ajax call to 'impliedvolatilityhandler.php' to generate delta hedging output without reloading the page --->
+		<!--- updates delta hedging output as user changes option expiry --->
 		<script>
 			// call php
 			$(document).ready(function() {
@@ -153,13 +153,15 @@
 						url: 'impliedvolatilityhandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
-							$('#result').html(msg);
+							$('#result').html(msg); // write output to the #result div
 						} 
 					});
 				});
 			});
 		</script>
 		
+		<!--- ajax call to 'impliedvolatilityhandler.php' to generate delta hedging output without reloading the page --->
+		<!--- updates delta hedging output as user changes option expiry --->
 		<script>
 			// call php
 			$(document).ready(function() {
@@ -169,13 +171,15 @@
 						url: 'impliedvolatilityhandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(),  'strike':$('#strike').val()},
 						success: function(msg) {
-							$('#result').html(msg);
+							$('#result').html(msg); // write output to the #result div
 						} 
 					});
 				});
 			});
 		</script>
 		
+		<!--- ajax call to 'impliedvolatilityhandler.php' to generate delta hedging output without reloading the page --->
+		<!--- updates delta hedging output as user changes the etf --->
 		<script>
 			// call php
 			$(document).ready(function() {
@@ -185,13 +189,15 @@
 						url: 'impliedvolatilityhandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 	'strike':$('#strike').val()},
 						success: function(msg) {
-							$('#result').html(msg);
+							$('#result').html(msg); // write output to the #result div
 						} 
 					});
 				});
 			});
 		</script>
 		
+		<!--- ajax call to 'deltahedginghandler.php' to generate delta hedging output without reloading the page --->
+		<!--- updates delta hedging output as user changes strike --->
 		<script>
 			// call php
 			$(document).ready(function() {
@@ -202,13 +208,14 @@
 						url: 'impliedvolatilityhandler.php',
 						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
-							$('#result').html(msg);						
+							$('#result').html(msg);	// write output to the #result div					
 						}
 					});
 				});
 			});
 		</script>
 		
+		<!--- makes informational pop-up appear when user mouses over each section of the page --->
 		<script>
 			$('[data-toggle="tooltip"]').tooltip({
 			    'placement': 'top'

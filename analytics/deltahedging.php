@@ -17,6 +17,7 @@
 		
 		#echo 'IN THE HEDGING...<br>';
 		$num_options = count($options);
+
 		#echo $num_options.'<br>';
 		
 		echo '<br>';

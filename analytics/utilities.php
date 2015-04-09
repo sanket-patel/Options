@@ -41,9 +41,9 @@
 		$dt = new DateTime($dt);
 		return $dt->format('m/d/Y');
 	}
-	
+		
 	function pdf($x) {
-		return 1 / (sqrt(2 * pi()) * exp(-(pow($x, 2) / 2)));
+		return  (1.0 / sqrt(2.0 * pi())) * exp(-pow($x, 2.0) * 0.5);
 	}
 	
 	function format_num($num, $digits) {

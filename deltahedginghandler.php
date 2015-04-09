@@ -11,8 +11,14 @@
 		$etf = $_GET['etf'];
 		$expiry = $_GET['expiry'];
 		$impliedvol = $_GET['impliedvol'];
-		$impliedvol = ((float)str_replace('%','',$impliedvol)) / 100;
 		$strike = $_GET['strike'];
+		
+		if (((float)(str_replace('%','',$impliedvol) / 100 )< 0 )|| ($strike < 0)) {
+			echo "<script>alert('ABS() was applied to negative inputs')</script>";
+		}
+		
+		$impliedvol = abs(((float)str_replace('%','',$impliedvol)) / 100);
+		$strike = abs($_GET['strike']);
 		
 		// set additional variables
 		$spot_date = '2014-01-02';
@@ -20,20 +26,20 @@
 		$dcf = get_daycount_fraction($spot_date, $expiry);
 		$rate = 0.0;
 		
+		$cutoff = new DateTime('2014-12-31');
+		$exp = new DateTime($expiry);
+		$adjust = false;
+		if ($exp <= $cutoff) {echo $adjust = true;}
+		
 		// get data from db
 		$expiry = remove_hyphen_from_date($expiry);
 		$expiry = format_expiry($expiry);
 		#$expiry = '20140111';
 		$query = "SELECT * FROM ".$etf." WHERE Str_to_date(Date, '%Y%m%d') <= Str_to_date('".$expiry."', '%Y%m%d')";
 		$results = execute_query($query);
-		
+				
 		// array to hold options
 		$options = array();
-		
-		echo 'GOT INTO THE FUNCTION';
-		echo $etf.'<br>'.$expiry.'<br>'.$impliedvol.'<br>'.$strike.'<br>'.$dcf.'<br>';
-		echo $query.'<br>';
-		echo $results->num_rows; 
 		
 		// populate options array
 		if ($results->num_rows > 0) {
@@ -43,12 +49,16 @@
 				echo '<br><a class="btn btn-warning">Not enough dates: please select a date further in the future</a>';	
 			}
 			
+			$i = 1;
 			while($row = $results->fetch_assoc()) {
-				
+				if (($adjust) && ($i == $results->num_rows)) {
+					break;
+				}
 		    	$spot_date = $row["Date"];
 		    	$spot = $row["Price"];
 				$option = new EuroOptionPosition($spot, $strike, $spot_date, $expiry, $impliedvol, $rate);
 				$options[] = $option;
+				$i += 1;
 		    }
 			
 			// options have been set, now perform delta hedging
