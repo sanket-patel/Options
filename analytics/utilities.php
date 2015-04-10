@@ -71,6 +71,10 @@
 		$price = mysqli_fetch_assoc($result);
 		return $price['Price'];
 	}
+	
+	function display_expiry_alert() {
+		echo "<script>alert('Expiry must be at least 1 day after 1/2/2014')</script>";
+	}
 
 
 ?>

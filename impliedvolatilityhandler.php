@@ -8,9 +8,16 @@
 			
 		// assign variables to values from the GET request
 		$etf = $_GET['etf'];
+		
 		$expiry = $_GET['expiry'];
+		if ($expiry == '01/02/2014') {
+			display_expiry_alert();
+			$expiry = '01/03/2014';
+		}
+		
+		
 		$premium = $_GET['premium'];
-		$strike = $_GET['strike'];
+		$strike = abs($_GET['strike']);
 		
 		// set additional variables
 		$spot_date = '2014-01-02';		// implied vol is being calculated as of 1/2/2014

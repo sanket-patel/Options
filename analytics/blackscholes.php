@@ -39,21 +39,29 @@
 	
 	/*
 	 * implements simple version of newton-raphson solver
-	 * this is a fast solver that converges quickly but has trouble solving implied vol deep ITM and OTM options
+	 * converges quickly but has trouble dealing with deep ITM and OTM options
+	 * a lower bound of 00001 has been set on vega so it doesn't cause the update of
+	 * the implied vol estimate to blow up
 	 */ 
 	function newton_raphson($market_price, $strike, $spot, $dcf, $rate) {
 				
     	$tolerance = 0.000000000001;
     	$sigma = 1.0;	// initial guess
     	$model_price = 0;
+		$bound_1 = 0.00001;
+		$bound_2 = 0.000000001;
 
-	    $max_iters = 1000;
+	    $max_iters = 100;
 		$iters = 0;
+		
+		if ($market_price < 0.001) {
+			return '<a class="btn btn-warning">Premium is too low to effectively compute implied volatility</a>';	
+		}
 		
 	    while (abs($market_price - $model_price) > $tolerance) {
 	    	
 	    	// kick out of loop if max iterations is hit
-	    	// genreally speaking, newton raphson shouldn't require 1000 iterations for solving implied vol
+	    	// genreally speaking, newton raphson shouldn't require 100 iterations for solving implied vol
 	    	if($iters >= $max_iters) {
 	    		// since we exited solver before finding a solution, display the result as a warning
 	    		return '<a class="btn btn-danger>Solver failed to converge because max iterations reached</a>';
@@ -67,22 +75,24 @@
 						
 			// kick out of loop if vega gets too small
 			// vega close to 0 will cause f(x)/f'(x) to blow up and sovler to fail
-			if ($vega < 0.00001) {
+			if ($vega < $bound_2) {
 				// since we exited solver before finding a solution, display the result as a warning
 				return '<a class="btn btn-danger">Solver failed to converge because the inputs provided lead to a Vega of '.$vega.'</a>';
 			}
 			
 	       	// update estimate
-	       	$sigma = $sigma - (($model_price - $market_price) / $vega);
+	       	$sigma = $sigma - (($model_price - $market_price) / $vega);			
 			$iters = $iters + 1;
 		}
 		
 		// format from decimal to percentage
 		$sigma = format_num($sigma*100.0, 6).'%';
 		
-		if ($vega < 0.0001) {
+		if (($vega <= $bound_1) && ($vega >= $bound_2)) {
 			// display a warning if solver converged by vega was small
 			return '<a class="btn btn-warning">'.$sigma.' (unreliable due to magnitude of Vega)</a>';
+		} elseif ($vega < $bound_2) {
+			return '<a class="btn btn-danger">Solver failed to converge because the inputs provided lead to a Vega of '.$vega.'</a>';
 		} else {
 			// successfully converged
 			return '<a class="btn btn-success">'.$sigma.'</a>';	

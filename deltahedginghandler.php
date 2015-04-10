@@ -14,7 +14,7 @@
 		$strike = $_GET['strike'];
 		
 		if (((float)(str_replace('%','',$impliedvol) / 100 )< 0 )|| ($strike < 0)) {
-			echo "<script>alert('ABS() was applied to negative inputs')</script>";
+			echo "<script>alert('Please ensure all inputs are positive')</script>";
 		}
 		
 		$impliedvol = abs(((float)str_replace('%','',$impliedvol)) / 100);

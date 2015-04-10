@@ -75,7 +75,7 @@
 					<div class="panel-heading"><span class="label label-default label-as-badge">3</span>&nbsp&nbspEnter implied volatility (e.g 28.3%)</div>
 						<div class="panel-body">
 							<div class="input-append date">
-								<input type="text" id="impliedvol" name="impliedvol">
+								<input type="text" id="impliedvol" name="impliedvol" placeholder="20%">
 								<span class="add-on"><i class="icon-th"></i></span>
 							</div> <!--- END date input --->
 						</div> <!--- END panel-body --->
@@ -87,7 +87,7 @@
 					<div class="panel-heading"><span class="label label-default label-as-badge">4</span>&nbsp&nbspEnter a strike</div>
 						<div class="panel-body">
 							<div class="input-append date">
-								<input type="text" id="strike" name="strike">
+								<input type="text" id="strike" name="strike" placeholder="50">
 								<span class="add-on"><i class="icon-th"></i></span>
 							</div> <!--- END date input --->
 						</div> <!--- END panel-body --->
@@ -99,9 +99,9 @@
 				<div class="panel-heading">Delta Hedging Simulation</div>
 					<div class="panel-body inline-block">
 						<a class="btn btn-info"><span id="etfSelected">EFA</span></a>
-						<a class="btn btn-info"><span id="expiryEntered">DATE</span></a>
-						<a class="btn btn-info"><span id="impliedVolEntered">IMPLIED VOLATILITY</span></a>
-						<a class="btn btn-info"><span id="strikeEntered">STRIKE</span></a>
+						<a class="btn btn-info"><span id="expiryEntered">Select an expiry</span></a>
+						<a class="btn btn-info"><span id="impliedVolEntered">Enter an implied volatility</span></a>
+						<a class="btn btn-info"><span id="strikeEntered">Enter a strike</span></a>
 						<!--- results will be written to this div --->
 						<div id="result"></div>
 					</div> <!--- END panel-body --->
@@ -139,22 +139,14 @@
 			// expiry
 			$('#expiry').change(function() {
 				jQuery('#expiryEntered').text($('#expiry').val());
-				});
+			});
 		</script>
 		
 		<!--- dynamically update the IMPLIED VOL label in the output section when the input is changed --->
 		<script>
 			// implied vol
 			$('#impliedvol').change(function() {
-				var v = $('#impliedvol').val().replace('%','');
-				if (v < 0) {
-					//alert('Volatility must be positive.  Defaulting to 20%.');
-					$('#impliedVol').val('20%');
-					jQuery('#impliedVolEntered').text('20%');
-				} else {
-					//alert('we are ok');
-					jQuery('#impliedVolEntered').text($('#impliedvol').val());
-				}
+				jQuery('#impliedVolEntered').text($('#impliedvol').val());
 			});
 		</script>
 		
@@ -162,7 +154,7 @@
 		<script>
 			// strike
 			$('#strike').change(function() {
-				jQuery('#strikeEntered').text($('#strike').val());
+				jQuery('#strikeEntered').text(Math.abs($('#strike').val()));
 			});
 		</script>
 		
@@ -264,12 +256,12 @@
 		<!--- makes informational pop-up appear when user mouses over each section of the page --->
 		<script>
 			$('[data-toggle="tooltip"]').tooltip({
-			    'placement': 'top'
+			    'placement': 'left'
 			});
 			
 			$('[data-toggle="popover"]').popover({
 			    trigger: 'hover',
-			        'placement': 'top'
+			        'placement': 'left'
 			});
 			
 			

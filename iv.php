@@ -12,7 +12,7 @@
 		
 		<!--- using the jQuery datepicker element because <input type="date"> is an HTML5 element that is
 			currently only supported in Chrome and Safari --->
-		<<script type="text/javascript">
+		<script type="text/javascript">
 			$(function(){
 				$('.datepicker').datepicker({
 					showAnim: "fadeIn",
@@ -90,17 +90,18 @@
 							</div> <!--- END date input --->
 						</div> <!--- END panel-body --->
 				</div> <!--- END panel for strike --->
+			</div>
 			
 			<!--- output section --->
 			<div class="panel panel-info">
 				<div class="panel-heading">Implied Volatility</div>
 					<div class="panel-body inline-block">
 						<a class="btn btn-info"><span id="etfSelected">EFA</span></a>
-						<a class="btn btn-info"><span id="expiryEntered">DATE</span></a>
-						<a class="btn btn-info"><span id="premiumEntered">PREMIUM</span></a>
-						<a class="btn btn-info"><span id="strikeEntered">STRIKE</span></a>
+						<a class="btn btn-info"><span id="expiryEntered">Select an expiry</span></a>
+						<a class="btn btn-info"><span id="premiumEntered">Enter a premium</span></a>
+						<a class="btn btn-info"><span id="strikeEntered">Enter a strike</span></a>
 						<!--- results will be written here --->
-						<span id="result"><a class="btn btn-success">IMPLIED VOL%</a></span>
+						<span id="result"><a class="btn btn-success">Implied Volatility</a></span>
 					</div> <!--- END panel-body --->
 			</div> <!--- END panel for output --->
 		
@@ -126,7 +127,9 @@
 		<script>
 			// strike
 			$('#strike').change(function() {
-				jQuery('#strikeEntered').text($('#strike').val());
+				// make display strike as positive
+				// convert negative strike into postive in php script
+				jQuery('#strikeEntered').text(Math.abs($('#strike').val()));
 				});
 		</script>
 		
@@ -196,7 +199,7 @@
 			});
 		</script>
 		
-		<!--- ajax call to 'deltahedginghandler.php' to generate delta hedging output without reloading the page --->
+		<!--- ajax call to 'impliedvolatilityhandler.php' to generate delta hedging output without reloading the page --->
 		<!--- updates delta hedging output as user changes strike --->
 		<script>
 			// call php
@@ -218,12 +221,12 @@
 		<!--- makes informational pop-up appear when user mouses over each section of the page --->
 		<script>
 			$('[data-toggle="tooltip"]').tooltip({
-			    'placement': 'top'
+			    'placement': 'left'
 			});
 			
 			$('[data-toggle="popover"]').popover({
 			    trigger: 'hover',
-			        'placement': 'top'
+			        'placement': 'left'
 			});
 			
 			
