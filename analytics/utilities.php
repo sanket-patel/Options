@@ -48,7 +48,6 @@
 		}
 	}
 	
-	
 	/*
 	 * converts a date from "mm/dd/yyyy" into yyyymmdd
 	 */
@@ -113,6 +112,18 @@
 	 */
 	function display_expiry_alert() {
 		echo "<script>alert('Expiry must be at least 1 day after 1/2/2014')</script>";
+	}
+	
+	/*
+	 * ensures that each param in $params is greater than 0
+	 */
+	function params_all_valid($params) {
+		foreach($params as $param) {
+			if ((float)$param <= 0.0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 
