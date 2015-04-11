@@ -53,8 +53,10 @@
 	    $max_iters = 100;
 		$iters = 0;
 		
+		// if option is too deep OTM, solver will fail
+		// return error message 
 		if ($market_price < 0.001) {
-			return '<a class="btn btn-warning">Premium is too low to effectively compute implied volatility</a>';	
+			return die('<a class="btn btn-warning">Premium is too low to effectively compute implied volatility</a>');	
 		}
 		
 	    while (abs($market_price - $model_price) > $tolerance) {
@@ -63,7 +65,7 @@
 	    	// genreally speaking, newton raphson shouldn't require 100 iterations for solving implied vol
 	    	if($iters >= $max_iters) {
 	    		// since we exited solver before finding a solution, display the result as a warning
-	    		return '<a class="btn btn-danger>Solver failed to converge because max iterations reached</a>';
+	    		return die('<a class="btn btn-danger>Solver failed to converge because max iterations reached</a>');
 			}
 			
 			// we need d1 and vega because the objective function needs f'(x)
@@ -76,7 +78,7 @@
 			// vega close to 0 will cause f(x)/f'(x) to blow up and sovler to fail
 			if ($vega < $bound_2) {
 				// since we exited solver before finding a solution, display the result as a warning
-				return '<a class="btn btn-danger">Solver failed to converge because the inputs provided lead to a Vega of '.$vega.'</a>';
+				return die('<a class="btn btn-danger">Solver failed to converge because the inputs provided lead to a Vega of '.$vega.'</a>');
 			}
 			
 	       	// update estimate
@@ -88,9 +90,10 @@
 		$sigma = format_num($sigma*100.0, 6).'%';
 		
 		if (($vega <= $bound_1) && ($vega >= $bound_2)) {
-			// display a warning if solver converged by vega was small
+			// display warning if solution was found but vega is small
 			return '<a class="btn btn-warning">'.$sigma.' (unreliable due to magnitude of Vega)</a>';
 		} elseif ($vega < $bound_2) {
+			// return failure if vega is too small
 			return '<a class="btn btn-danger">Solver failed to converge because the inputs provided lead to a Vega of '.$vega.'</a>';
 		} else {
 			// successfully converged
