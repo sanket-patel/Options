@@ -15,8 +15,14 @@
 			echo die('<br><br><a class="btn btn-danger">Please ensure expiry is after 01/02/2014</a>');
 		}
 		
+		// get premium and strike from GET request
 		$premium = $_GET['premium'];
-		$strike = abs($_GET['strike']);
+		$strike = $_GET['strike'];
+
+		// make sure strike and premium are grater than 0
+		if (!params_all_valid(array($strike, $premium))) {
+			echo die('<br><br><a class="btn btn-danger">Please ensure both the strike and premium are greater than 0</a>');
+		}
 		
 		// set additional variables
 		$spot_date = '2014-01-02';		// implied vol is being calculated as of 1/2/2014
@@ -32,7 +38,7 @@
 		 
 	} else {
 		// not all values were entered on the webpage
-		echo '<br>'.'<strong>Please enter all values</strong>';
+		echo die('<br><br><a class="btn btn-warning">Please enter all values and ensure no values are 0</a>');
 	}
 
 ?>
