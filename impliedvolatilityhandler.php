@@ -10,12 +10,11 @@
 		$etf = $_GET['etf'];
 		$expiry = $_GET['expiry'];
 		
-		// option epiry == valuation date then move date forward in time by 1 day
-		if ($expiry == '01/02/2014') {
-			display_expiry_alert();
-			$expiry = '01/03/2014';
+		// make sure expiry isn't in the past or on 1/2/2014
+		if (!is_valid_expiry($expiry)) {
+			echo die('<br><br><a class="btn btn-danger">Please ensure expiry is after 01/02/2014</a>');
 		}
-
+		
 		$premium = $_GET['premium'];
 		$strike = abs($_GET['strike']);
 		
