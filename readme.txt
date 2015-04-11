@@ -4,7 +4,7 @@
 
 Options
 |
-|___\.git (metadata used by Git
+|___\.git (metadata used by Git)
 |
 |___\.settings (metadata used by the Aptana IDE)
 |
@@ -23,7 +23,8 @@ Options
 |
 |___templates
 |	|
-|	|___etfdropdown.php (html for selector element used in both iv.php and dh.php
+|	|___etfdropdown.php (html for selector element used in both iv.php and dh.php)
+|	|___expirydatepicker.php (html for datepicker element used in both iv.php and dh.hp)
 |
 |___config
 |	|
