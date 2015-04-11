@@ -27,9 +27,9 @@
 		$rate = 0.0;
 		
 		$cutoff = new DateTime('2014-12-31');
-		$exp = new DateTime($expiry);
+		//$exp = new DateTime($expiry);
 		$adjust = false;
-		if ($exp <= $cutoff) {
+		if (new DateTime($expiry) <= $cutoff) {
 			$adjust = true;
 		}
 		
@@ -48,7 +48,6 @@
 			// make  sure there enough dates were selected for performing delta heding simulation
 			if($results->num_rows < 2) {
 				echo die('<br><a class="btn btn-warning">Please ensure expiry is after 01/02/2014</a>');	
-				
 			}
 			
 			$i = 1;
