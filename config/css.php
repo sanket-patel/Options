@@ -10,6 +10,7 @@
 <!-- Font Awesome -->
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
+
 <style>
 	.input-group[class*="col-"] {
 	    padding-right: 0px;
@@ -18,6 +19,7 @@
 	}
 </style>
 
+<!-- css pop up boxes --->
 <style>
 	#popup {
     	margin-top:10px;

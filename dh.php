@@ -233,18 +233,6 @@
 				});
 			});
 		</script>
-		
-		<!--- makes informational pop-up appear when user mouses over each section of the page --->
-		<script>
-			$('[data-toggle="tooltip"]').tooltip({
-			    'placement': 'left'
-			});
-			
-			$('[data-toggle="popover"]').popover({
-			    trigger: 'hover',
-			        'placement': 'left'
-			});
-		</script>
 
 	</body> <!--- END BODY --->  
 	

@@ -3,7 +3,6 @@
 	require_once 'analytics/utilities.php';
 	require_once 'analytics/blackscholes.php';
 	
-	
 	/*
 	 * European option class (assumes option is a call)
 	 */
