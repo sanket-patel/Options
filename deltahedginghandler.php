@@ -47,7 +47,8 @@
 			
 			// make  sure there enough dates were selected for performing delta heding simulation
 			if($results->num_rows < 2) {
-				echo '<br><a class="btn btn-warning">Not enough dates: please select a date further in the future</a>';	
+				echo die('<br><a class="btn btn-warning">Please ensure expiry is after 01/02/2014</a>');	
+				
 			}
 			
 			$i = 1;
@@ -125,7 +126,7 @@
 
 		} else {
 			// nothing 
-		    echo "0 results returned by the query to the database";
+		    echo die('<br><a class="btn btn-warning">Please ensure expiry is after 01/02/2014</a>');
 		}
 		
 
