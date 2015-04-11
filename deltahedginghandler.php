@@ -13,21 +13,28 @@
 		$impliedvol = $_GET['impliedvol'];
 		$strike = $_GET['strike'];
 		
-		if (((float)(str_replace('%','',$impliedvol) / 100 )< 0 )|| ($strike < 0)) {
-			echo "<script>alert('Please ensure all inputs are positive')</script>";
+		// make sure expiry is after 1/2/2014
+		if (!is_valid_expiry($expiry)) {
+			echo die('<br><br><a class="btn btn-danger">Please ensure expiry is after 01/02/2014</a>');
 		}
+			
+		$impliedvol = ((float)str_replace('%','',$impliedvol) / 100); //convert to number
+		$strike = $_GET['strike'];
 		
-		$impliedvol = abs(((float)str_replace('%','',$impliedvol)) / 100);
-		$strike = abs($_GET['strike']);
-		
+		// make sure strike and implied vol are grater than 0
+		if (!params_all_valid(array($strike, $impliedvol))) {
+			echo die('<br><a class="btn btn-danger">Please ensure both the strike and implied vol are greater than 0</a>');
+		}
+
 		// set additional variables
 		$spot_date = '2014-01-02';
-		//$spot = get_price_as_of($spot_date, $etf);
 		$dcf = get_daycount_fraction($spot_date, $expiry);
 		$rate = 0.0;
 		
+		// if the expiry entered is on or before 12/31/2014, price the options
+		// only up until day(expiry-1) because option on day(expiry) will result in
+		// a dividy by 0 error because the daycount fracation  will be 0
 		$cutoff = new DateTime('2014-12-31');
-		//$exp = new DateTime($expiry);
 		$adjust = false;
 		if (new DateTime($expiry) <= $cutoff) {
 			$adjust = true;
@@ -44,11 +51,6 @@
 		
 		// populate options array
 		if ($results->num_rows > 0) {
-			
-			// make  sure there enough dates were selected for performing delta heding simulation
-			if($results->num_rows < 2) {
-				echo die('<br><a class="btn btn-warning">Please ensure expiry is after 01/02/2014</a>');	
-			}
 			
 			$i = 1;
 			while($row = $results->fetch_assoc()) {
@@ -125,12 +127,11 @@
 
 		} else {
 			// nothing 
-		    echo die('<br><a class="btn btn-warning">Please ensure expiry is after 01/02/2014</a>');
+		    echo die('<br><a class="btn btn-danger>Something went wrong...please try again</a>');
 		}
 		
-
 	} else {
-		echo '<br><br>'.'<strong>Please enter all values</strong>';
+		echo die('<br><a class="btn btn-warning">Please enter all values and ensure no values are 0</a>');
 	}
 
 ?>
