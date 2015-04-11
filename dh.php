@@ -1,4 +1,4 @@
-<?php include('config/setup.php'); ?>
+<?php include('config/database.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +6,7 @@
 	<head>
 		<?php
 		    # load common scripts
-			include('config/setup.php');
+			include('config/database.php');
 			include('config/js.php');	
 			include('config/css.php');
 		?>	
@@ -34,7 +34,7 @@
 			<nav class="navbar navbar-default">
 				<div class="container-fluid">
 					<div class="navbar-header">
-						<a class="navbar-brand" href="index.php"><i class="fa fa-bar-chart"></i></a>
+						<a class="navbar-brand" href="index.php" title="Home"><i class="fa fa-bar-chart" style="color:black"></i></a>
 					</div> <!--- END navbar header --->
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
@@ -72,22 +72,22 @@
 			
 			<div data-toggle="tooltip" title="Enter an implied volatility, for example 20%">
 				<div class="panel panel-default">
-					<div class="panel-heading"><span class="label label-default label-as-badge">3</span>&nbsp&nbspEnter implied volatility (e.g 28.3%)</div>
+					<div class="panel-heading"><span class="label label-default label-as-badge">3</span>&nbsp&nbspEnter implied volatility (e.g 20%)</div>
 						<div class="panel-body">
 							<div class="input-append date">
-								<input type="text" id="impliedvol" name="impliedvol" placeholder="20%">
+								<input type="text" id="impliedvol" name="impliedvol">
 								<span class="add-on"><i class="icon-th"></i></span>
 							</div> <!--- END date input --->
 						</div> <!--- END panel-body --->
 				</div> <!--- END panel for premium --->
 			</div>
 			
-			<div data-toggle="tooltip" title="Enter an strike, for example 50, then press TAB if you are using FireFox or IE or press ENTER if you are using Chrome">
+			<div data-toggle="tooltip" title="Enter an strike, for example 50, then press TAB">
 				<div class="panel panel-default">
-					<div class="panel-heading"><span class="label label-default label-as-badge">4</span>&nbsp&nbspEnter a strike</div>
+					<div class="panel-heading"><span class="label label-default label-as-badge">4</span>&nbsp&nbspEnter a strike (e.g. 50)</div>
 						<div class="panel-body">
 							<div class="input-append date">
-								<input type="text" id="strike" name="strike" placeholder="50">
+								<input type="text" id="strike" name="strike">
 								<span class="add-on"><i class="icon-th"></i></span>
 							</div> <!--- END date input --->
 						</div> <!--- END panel-body --->
@@ -98,47 +98,28 @@
 			<div class="panel panel-info">
 				<div class="panel-heading">Delta Hedging Simulation</div>
 					<div class="panel-body inline-block">
-						<a class="btn btn-info"><span id="etfSelected">EFA</span></a>
-						<a class="btn btn-info"><span id="expiryEntered">Select an expiry</span></a>
-						<a class="btn btn-info"><span id="impliedVolEntered">Enter an implied volatility</span></a>
-						<a class="btn btn-info"><span id="strikeEntered">Enter a strike</span></a>
+						<a class="btn btn-info"><span id="etf_selected">EFA</span></a>
+						<a class="btn btn-info"><span id="expiry_entered">Enter an expiry</span></a> 
+						<a class="btn btn-info"><span id="implied_vol_entered">Enter an implied volatility</span></a>
+						<a class="btn btn-info"><span id="strike_entered">Enter a strike</span></a>
 						<!--- results will be written to this div --->
 						<div id="result"></div>
 					</div> <!--- END panel-body --->
 			</div> <!--- END panel for output --->
 		</div> <!--- END container --->
 		
-		<!--- jQuery to populate inputs with some initial values as examples --->
+		<!--- set default of expiry labal in output section today's date --->
 		<script>
-		//	$(document).ready(function() {
-		//		// set values of input elements
-		//		$('#myEtf').val('IWM');
-		//		$('#expiry').val('01\/04\/2014');
-		//		$('#impliedvol').val('20%');
-		//		$('#strike').val('110');
-		//		// set values of ouptput labels
-		//		$('#etfSelected').text('IWM');
-		//		$('#expiryEntered').text('01\/04\/2014');
-		//		$('#impliedvolEntered').text('20%');
-		//		jQuery('#impliedVolEntered').text('20%');
-		//		$('#strikeEntered').text('110');
-		//		$.ajax({
-		//				type: 'GET',
-		//				url: 'deltahedginghandler.php',
-		//				data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
-		//				success: function(msg) {
-		//					$('#result').html(msg); // write output to the #result div
-		//				} 
-		//			});
-		//	});
-		//
-		</script>
-
+			$(document).ready(function() {
+				jQuery('#expiry_entered').text($('#expiry').val());
+			});
+		</script>	
+		
 		<!--- dynamically update the EXPIRY label in the output section when the input is changed --->
 		<script>
 			// expiry
 			$('#expiry').change(function() {
-				jQuery('#expiryEntered').text($('#expiry').val());
+				jQuery('#expiry_entered').text($('#expiry').val());
 			});
 		</script>
 		
@@ -146,7 +127,7 @@
 		<script>
 			// implied vol
 			$('#impliedvol').change(function() {
-				jQuery('#impliedVolEntered').text($('#impliedvol').val());
+				jQuery('#implied_vol_entered').text($('#impliedvol').val());
 			});
 		</script>
 		
@@ -154,7 +135,7 @@
 		<script>
 			// strike
 			$('#strike').change(function() {
-				jQuery('#strikeEntered').text(Math.abs($('#strike').val()));
+				jQuery('#strike_entered').text(Math.abs($('#strike').val()));
 			});
 		</script>
 		
@@ -162,10 +143,10 @@
 		<script type='text/javascript'>
 			// etfs changes
 			$(function() {
-			    $('#myEtf').change(function() {
+			    $('#my_etf').change(function() {
 			        var x = $(this).val();
-			        $('#hiddenEtf').val(x);
-			        jQuery('#etfSelected').text($('#myEtf').val());
+			        $('#hidden_etf').val(x);
+			        jQuery('#etf_selected').text($('#my_etf').val());
 			    });
 			});
 		</script>
@@ -181,15 +162,15 @@
 					if (v < 0) {
 						alert('Volatility must be positive.  Defaulting to 20%.');
 						//$('#impliedVol').val('20%');
-						$('#impliedVolEntered').text('20%');
+						$('#implied_vol_entered').text('20%');
 					} else {
 						//alert('we are ok');
-						jQuery('#impliedVolEntered').text($('#impliedvol').val());
+						jQuery('#implied_vol_entered').text($('#impliedvol').val());
 						// here
 						$.ajax({
 							type: 'GET',
 							url: 'deltahedginghandler.php',
-							data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
+							data: {'etf':$('#my_etf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
 							success: function(msg) {
 								$('#result').html(msg); // write output to the #result div
 							} 
@@ -208,7 +189,7 @@
 					$.ajax({
 						type: 'GET',
 						url: 'deltahedginghandler.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(),  'strike':$('#strike').val()},
+						data: {'etf':$('#my_etf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(),  'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg); // write output to the #result div
 						} 
@@ -222,11 +203,11 @@
 		<script>
 			// call php
 			$(document).ready(function() {
-				$('#myEtf').change(function() {
+				$('#my_etf').change(function() {
 					$.ajax({
 						type: 'GET',
 						url: 'deltahedginghandler.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 	'strike':$('#strike').val()},
+						data: {'etf':$('#my_etf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 	'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg); // write output to the #result div
 						} 
@@ -244,7 +225,7 @@
 					$.ajax({
 						type: 'GET',
 						url: 'deltahedginghandler.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
+						data: {'etf':$('#my_etf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg); // write output to the #result div				
 						}
@@ -263,15 +244,6 @@
 			    trigger: 'hover',
 			        'placement': 'left'
 			});
-			
-			
-			$('#popup_static').tooltip({
-			    'show': true,
-			        'placement': 'bottom',
-			        'title': "Please remember to..."
-			});
-			
-			$('#popup_static').tooltip('show');
 		</script>
 
 	</body> <!--- END BODY --->  

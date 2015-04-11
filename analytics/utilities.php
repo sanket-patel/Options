@@ -1,7 +1,9 @@
 <?php
 
+	/*
+	 * approximate cumulative density
+	 */
 	function cdf($x) {
-		// approximation of cumulative density function
 		$b1 = 0.31938153;
     	$b2 = -0.356563782;
     	$b3 = 1.781477937;
@@ -22,8 +24,10 @@
 		}
 	}
 	
+	/*
+	 * calculate the daycount fraction between two date assuming an ACT/360 basis
+	 */
 	function get_daycount_fraction($dateFrom, $dateTo) {
-		// calculate day count fraction between two dates
 		$dateFrom = new DateTime($dateFrom);
 		$dateTo = new DateTime($dateTo);
 		$interval = $dateFrom->diff($dateTo);
@@ -32,46 +36,68 @@
 		return (float)$dcfAct360;
 	}
 	
+	/*
+	 * converts a date from "mm/dd/yyyy" into yyyymmdd
+	 */
 	function format_expiry($expiry) {
 		list($month, $day, $year) = explode('/', $expiry);
 		return $year.$month.$day;
 	}
 	
+	/*
+	 * converts a string into a date
+	 */
 	function format_as_date($dt) {
 		$dt = new DateTime($dt);
 		return $dt->format('m/d/Y');
 	}
-		
+	
+	/*
+	 * calculates probability density funtion
+	 */	
 	function pdf($x) {
 		return  (1.0 / sqrt(2.0 * pi())) * exp(-pow($x, 2.0) * 0.5);
 	}
 	
+	/*
+	 * converts a double formatted to display the desired number of digits 
+	 */
 	function format_num($num, $digits) {
 		return number_format($num, $digits);
 	}
 	
+	/*
+	 * conversts a date string from yyyy-mm-dd into yyyymmdd
+	 */
 	function remove_hyphen_from_date($date) {
 		// remove - from date 
 		$date = str_replace('-', '', $date);
 		return $date;	
 	}
 	
+	/* 
+	 * executes query and returns results
+	 */
 	function execute_query($query) {
-		include('config/setup.php');
+		include('config/database.php');
 		$result = mysqli_query($dbc, $query);
 		return $result;
 	}
 	
+	/*
+	 * returns etf price of on a given day
+	 */
 	function get_price_as_of($date, $etf){
-		// get price as of a date
-		include('config/setup.php');
+		include('config/database.php');
 		$query = "SELECT Price FROM ".$etf." WHERE Date = '".remove_hyphen_from_date($date)."'";
-		#echo $query;
-		$result = execute_query($query);
-		$price = mysqli_fetch_assoc($result);
+		$result = execute_query($query);		// there should only be 1 row in the result
+		$price = mysqli_fetch_assoc($result);	//convert results into an associative array
 		return $price['Price'];
 	}
 	
+	/*
+	 * returns an alert if the expiry entered (for implied vol calcultion) equal the valuaion day
+	 */
 	function display_expiry_alert() {
 		echo "<script>alert('Expiry must be at least 1 day after 1/2/2014')</script>";
 	}

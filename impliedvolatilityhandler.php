@@ -8,14 +8,14 @@
 			
 		// assign variables to values from the GET request
 		$etf = $_GET['etf'];
-		
 		$expiry = $_GET['expiry'];
+		
+		// option epiry == valuation date then move date forward in time by 1 day
 		if ($expiry == '01/02/2014') {
 			display_expiry_alert();
 			$expiry = '01/03/2014';
 		}
-		
-		
+
 		$premium = $_GET['premium'];
 		$strike = abs($_GET['strike']);
 		
@@ -23,11 +23,9 @@
 		$spot_date = '2014-01-02';		// implied vol is being calculated as of 1/2/2014
 		$spot = get_price_as_of($spot_date, $etf);
 		$dcf = get_daycount_fraction($spot_date, $expiry);
-		//$sigma_initial = 0.25;
 		$rate = 0.0;
 		
-		// calculate option price and implied vol
-		//$option_price = bs_price($spot, $strike, $rate, $sigma_initial, $dcf);
+		// calculate implied vol
 		$implied_vol = newton_raphson($premium, $strike, $spot, $dcf, $rate);
 	
 		// return output of implied vol solver to webpage
@@ -35,7 +33,7 @@
 		 
 	} else {
 		// not all values were entered on the webpage
-		echo '<br>'.'please enter all values';
+		echo '<br>'.'<strong>Please enter all values</strong>';
 	}
 
 ?>

@@ -4,7 +4,6 @@
 	 * computes and returns d1
 	 */
 	function get_d1($spot, $strike, $rate, $sigma, $dcf) {
-		//echo sqrt($dcf);
     	return (log($spot / $strike) + ($rate + (pow($sigma, 2)) / 2) * $dcf) / ($sigma * sqrt($dcf));
 	}
 	
@@ -29,7 +28,7 @@
 	}
 	
 	/*
-	 * computer and returns delta by estimating cumulative density of d1
+	 * computes and returns delta
 	 */ 
 	function bs_delta($spot, $strike, $rate, $sigma, $dcf) {
     	$d1 = get_d1($spot, $strike, $rate, $sigma, $dcf);

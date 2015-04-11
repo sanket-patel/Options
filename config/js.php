@@ -7,7 +7,7 @@
 <!-- Latest compiled and minified JavaScript  (twitter bootstrap javascript)-->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-<!--- anglarJS --->
+<!--- angluarJS --->
 <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 
 <!--- Google Charts --->
@@ -16,17 +16,3 @@
 <!--- <script src="http://code.jquery.com/jquery-1.9.0.js"></script> --->
 <!--- <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script> --->
 
-
-<script>
-	function setIWM() {
-		//jQuery('#e").val("IWM");
-		jQuery('#etfSelected').text("IWM");
-	}
-</script>
-
-<script>	
-	function setSPY() {
-		//jQuery('#e").val("SPY");
-		jQuery('#etfSelected').text("SPY");
-	}
-</script> 

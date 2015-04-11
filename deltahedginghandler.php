@@ -29,12 +29,13 @@
 		$cutoff = new DateTime('2014-12-31');
 		$exp = new DateTime($expiry);
 		$adjust = false;
-		if ($exp <= $cutoff) {echo $adjust = true;}
+		if ($exp <= $cutoff) {
+			$adjust = true;
+		}
 		
 		// get data from db
 		$expiry = remove_hyphen_from_date($expiry);
 		$expiry = format_expiry($expiry);
-		#$expiry = '20140111';
 		$query = "SELECT * FROM ".$etf." WHERE Str_to_date(Date, '%Y%m%d') <= Str_to_date('".$expiry."', '%Y%m%d')";
 		$results = execute_query($query);
 				
@@ -44,24 +45,27 @@
 		// populate options array
 		if ($results->num_rows > 0) {
 			
-			// make there enough dates were selected for performing delta heding simulation
+			// make  sure there enough dates were selected for performing delta heding simulation
 			if($results->num_rows < 2) {
 				echo '<br><a class="btn btn-warning">Not enough dates: please select a date further in the future</a>';	
 			}
 			
 			$i = 1;
 			while($row = $results->fetch_assoc()) {
+				// if the expiry entered is on or before 12/31/2014, price the options
+				// only up until day(expiry-1) because option on day(expiry) will result in
+				// a dividy by 0 error because the daycount fracation  will be 0
 				if (($adjust) && ($i == $results->num_rows)) {
 					break;
 				}
 		    	$spot_date = $row["Date"];
 		    	$spot = $row["Price"];
-				$option = new EuroOptionPosition($spot, $strike, $spot_date, $expiry, $impliedvol, $rate);
+				$option = new EuroOptionPosition($spot, $strike, $spot_date, $expiry, $impliedvol, $rate); //create an option for each day
 				$options[] = $option;
 				$i += 1;
 		    }
 			
-			// options have been set, now perform delta hedging
+			// containers for simulation data
 			$option_pnl = array(); //call(t) - call(t-1)
 			$equity_pnl = array(); //dollardelta(t) - dollardelta(t-1)
 			$cashflows = array();  //(delta(t) - delta(t-1)) * spot(t)
@@ -72,10 +76,10 @@
 			$pnl_array = array($option_pnl, $equity_pnl, $cashflows, $hedge_pnl, $daily_pnl);
 			$pnl_array = perform_delta_hedging($options, $pnl_array);
 			
-			// format output into html table
+			// column headers for the output
 			$columns = array('Date', 'Option', 'Spot', 'Dollar Delta', 'Option PNL', 'Hedge PNL', 'Daily PNL');
 			
-			#echo $formatted_output;
+			// start formatting the output into an html table
 			$table_tag = '<table class="table table-hover table-condensed table-striped">';
 			
 			// table heading
@@ -89,6 +93,7 @@
 			$table_body = '<tbody>';
 			$i = 0;
 			
+			// create html for each row of the table
 			foreach($options as $option) {
 				$tr = '<tr>';
 				$tr = $tr.'<td>'.format_as_date($option->spot_date).'</td>';
@@ -103,22 +108,7 @@
 				$i = $i + 1;
 			}
 			
-			/*
-			foreach($options as $option) {
-				$tr = '<tr>';
-				$tr = $tr.'<td>'.format_as_date($option->spot_date).'</td>';
-				$tr = $tr.'<td>'.format_num((float)$option->price,4).'</td>';							//option price
-				$tr = $tr.'<td>'.format_num((float)$option->spot,4).'</td>';							//spot
-				$tr = $tr.'<td>'.format_num((float)$option->dollar_delta,4).'</td>';					//dollar delta
-				$tr = $tr.'<td>'.format_num((float)$pnl_array[0][$i],4).'</td>';						//option pnl	
-				$tr = $tr.'<td>'.format_num((float)$pnl_array[3][$i],4).'</td>';						//hedge pnl	
-				$tr = $tr.'<td>'.format_num((float)$pnl_array[4][$i],4).'</td>';						//total pnl
-				$tr = $tr.'</tr>';
-				$table_body = $table_body.$tr;
-				$i = $i + 1;
-			}
-			*/
-			// final rolw
+			// add a final row which sums the option pnl, hedge pnl and daily pnl columns
 			$table_body = $table_body.'<tr><td>-</td><td>-</td><td>-</td><td>-</td>';
 			$table_body = $table_body.'<td><strong>'.format_num(array_sum($pnl_array[0]),4).'</strong></td>';	// sum of option pnl
 			$table_body = $table_body.'<td><strong>'.format_num(array_sum($pnl_array[3]),4).'</strong></td>';	// sum of hedge pnl
@@ -127,16 +117,20 @@
 			
 			$table_body = $table_body.'</tbody>';
 			
+			// combine all table elements to form full table
 			$table = $table_tag.$table_head.$table_body.'</table>';
-			echo '<a href="dh.php">Reload Page</a><br><br>'.$table;
+			
+			// add a reload link
+			echo '<br><a href="dh.php">Reload Page</a><br><br>'.$table;
 
 		} else {
-		    echo "0 results";
+			// nothing 
+		    echo "0 results returned by the query to the database";
 		}
 		
 
 	} else {
-		echo '<br>'.'please enter all values';
+		echo '<br><br>'.'<strong>Please enter all values</strong>';
 	}
 
 ?>

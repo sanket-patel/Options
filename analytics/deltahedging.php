@@ -15,22 +15,24 @@
 		$hedge_pnl[] = 0.0;
 		$daily_pnl[] = 0.0;
 		
-		#echo 'IN THE HEDGING...<br>';
-		$num_options = count($options);
-
-		#echo $num_options.'<br>';
 		
-		echo '<br>';
+		$num_options = count($options);
+		
+
 		for ($t = 1; $t < $num_options; $t++) {
 				
 			// get options pnl
 			$opt_pnl = (float)(-1 * ($options[$t]->price - $options[$t-1]->price));  //we are short the call
+			
 			// get equity pnl
 			$eq_pnl = $options[$t]->dollar_delta -  $options[$t-1]->dollar_delta;
+			
 			// get cashflow from rebalancing the delta
 			$cashflow = -1* ($options[$t]->spot * ($options[$t]->delta -  $options[$t-1]->delta));
+			
 			// get total hedge pnl
 			$hedge = $eq_pnl + $cashflow;
+			
 			// get total pnl (option + hedge)
 			$total_pnl = $opt_pnl + $hedge;
 
@@ -39,9 +41,7 @@
 			$cashflows[] = (float)$cashflow;
 			$hedge_pnl[] = 	(float)$hedge;
 			$daily_pnl[] = (float)$total_pnl;
-			
-			#echo '<br>'.$options[$t]->spot_date.','.$options[$t]->delta.','.$eq_pnl.','.$cashflow.','.-($cashflow+$eq_pnl).','.$total_pnl;
-				
+						
 		}
 		
 		// collect the results

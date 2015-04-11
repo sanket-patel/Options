@@ -1,4 +1,4 @@
-<?php include('config/setup.php'); ?>
+<?php include('config/database.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +32,7 @@
 			<nav class="navbar navbar-default">
 				<div class="container-fluid">
 					<div class="navbar-header">
-						<a class="navbar-brand" href="index.php"><i class="fa fa-bar-chart"></i></a>
+						<a class="navbar-brand" href="index.php" title="Home"><i class="fa fa-bar-chart" style="color:black"></i></a>
 					</div> <!--- END navbar header --->
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
@@ -61,31 +61,31 @@
 							<div class="input-append date">
 								<!--- type-"date" is currently not supported in firefox and ie --->
 								<!--- input type="date" id="expiry" name="expiry" /> --->
-								<input class="datepicker" id="expiry" name="expiry" placeholder="01/02/2014" />
+								<input class="datepicker" id="expiry" name="expiry" />
 								<span class="add-on"><i class="icon-th"></i></span>
 							</div> <!--- END date input --->
 						</div> <!--- END panel-body --->
 				</div> <!--- END panel for expiry--->
 			</div>
 			
-			<div data-toggle="tooltip" title="Enter an option premium, for example 10.24">
+			<div data-toggle="tooltip" title="Enter an option premium, for example 20">
 				<div class="panel panel-default">
-					<div class="panel-heading"><span class="label label-default label-as-badge">3</span>&nbsp&nbspEnter option premium</div>
+					<div class="panel-heading"><span class="label label-default label-as-badge">3</span>&nbsp&nbspEnter option premium (e.g. 20)</div>
 						<div class="panel-body">
 							<div class="input-append date">
-								<input type="text" id="premium" name="premium" placeholder="20.0">
+								<input type="text" id="premium" name="premium">
 								<span class="add-on"><i class="icon-th"></i></span>
 							</div> <!--- END date input --->
 						</div> <!--- END panel-body --->
 				</div> <!--- END panel for premium --->
 			</div>
 			
-			<div data-toggle="tooltip" title="Enter an strike, for example 50, then press TAB if you are using FireFox or IE or press ENTER if you are using Chrome">
+			<div data-toggle="tooltip" title="Enter an strike, for example 60, then press TAB">
 				<div class="panel panel-default">
-					<div class="panel-heading"><span class="label label-default label-as-badge">4</span>&nbsp&nbspEnter a strike</div>
+					<div class="panel-heading"><span class="label label-default label-as-badge">4</span>&nbsp&nbspEnter a strike (e.g. 60)</div>
 						<div class="panel-body">
 							<div class="input-append date">
-								<input type="text" id="strike" name="strike" placeholder="60.0">
+								<input type="text" id="strike" name="strike">
 								<span class="add-on"><i class="icon-th"></i></span>
 							</div> <!--- END date input --->
 						</div> <!--- END panel-body --->
@@ -96,10 +96,10 @@
 			<div class="panel panel-info">
 				<div class="panel-heading">Implied Volatility</div>
 					<div class="panel-body inline-block">
-						<a class="btn btn-info"><span id="etfSelected">EFA</span></a>
-						<a class="btn btn-info"><span id="expiryEntered">Select an expiry</span></a>
-						<a class="btn btn-info"><span id="premiumEntered">Enter a premium</span></a>
-						<a class="btn btn-info"><span id="strikeEntered">Enter a strike</span></a>
+						<a class="btn btn-info"><span id="etf_selected">EFA</span></a>
+						<a class="btn btn-info"><span id="expiry_entered">Enter an expiry</span></a>
+						<a class="btn btn-info"><span id="premium_entered">Enter a premium</span></a>
+						<a class="btn btn-info"><span id="strike_entered">Enter a strike</span></a>
 						<!--- results will be written here --->
 						<span id="result"><a class="btn btn-success">Implied Volatility</a></span>
 					</div> <!--- END panel-body --->
@@ -111,7 +111,7 @@
 		<script>
 			// expiry changes
 			$('#expiry').change(function() {
-				jQuery('#expiryEntered').text($('#expiry').val());
+				jQuery('#expiry_entered').text($('#expiry').val());
 				});
 		</script>
 		
@@ -119,7 +119,7 @@
 		<script>
 			// premium changes
 			$('#premium').change(function() {
-				jQuery('#premiumEntered').text($('#premium').val());
+				jQuery('#premium_entered').text($('#premium').val());
 				});
 		</script>
 		
@@ -129,7 +129,7 @@
 			$('#strike').change(function() {
 				// make display strike as positive
 				// convert negative strike into postive in php script
-				jQuery('#strikeEntered').text(Math.abs($('#strike').val()));
+				jQuery('#strike_entered').text(Math.abs($('#strike').val()));
 				});
 		</script>
 		
@@ -137,16 +137,23 @@
 		<script type='text/javascript'>
 			// etfs changes
 			$(function() {
-			    $('#myEtf').change(function() {
+			    $('#my_etf').change(function() {
 			        var x = $(this).val();
-			        $('#hiddenEtf').val(x);
-			        jQuery('#etfSelected').text($('#myEtf').val());
+			        $('#hidden_etf').val(x);
+			        jQuery('#etf_selected').text($('#my_etf').val());
 			    });
 			});
 			</script>
+			
+		<!--- set default of expiry labal in output section today's date --->
+		<script>
+			$(document).ready(function() {
+				jQuery('#expiry_entered').text($('#expiry').val());
+			});
+		</script>		
 		
-		<!--- ajax call to 'impliedvolatilityhandler.php' to generate delta hedging output without reloading the page --->
-		<!--- updates delta hedging output as user changes option expiry --->
+		<!--- ajax call to 'impliedvolatilityhandler.php' calculate implied volatility without reloading the page --->
+		<!--- updates implied volatility as user changes strike --->
 		<script>
 			// call php
 			$(document).ready(function() {
@@ -154,7 +161,7 @@
 					$.ajax({
 						type: 'GET',
 						url: 'impliedvolatilityhandler.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
+						data: {'etf':$('#my_etf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg); // write output to the #result div
 						} 
@@ -163,8 +170,8 @@
 			});
 		</script>
 		
-		<!--- ajax call to 'impliedvolatilityhandler.php' to generate delta hedging output without reloading the page --->
-		<!--- updates delta hedging output as user changes option expiry --->
+		<!--- ajax call to 'impliedvolatilityhandler.php' calculate implied volatility without reloading the page --->
+		<!--- updates implied volatility as user changes strike --->
 		<script>
 			// call php
 			$(document).ready(function() {
@@ -172,7 +179,7 @@
 					$.ajax({
 						type: 'GET',
 						url: 'impliedvolatilityhandler.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(),  'strike':$('#strike').val()},
+						data: {'etf':$('#my_etf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(),  'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg); // write output to the #result div
 						} 
@@ -181,16 +188,16 @@
 			});
 		</script>
 		
-		<!--- ajax call to 'impliedvolatilityhandler.php' to generate delta hedging output without reloading the page --->
-		<!--- updates delta hedging output as user changes the etf --->
+		<!--- ajax call to 'impliedvolatilityhandler.php' calculate implied volatility without reloading the page --->
+		<!--- updates implied volatility as user changes strike --->
 		<script>
 			// call php
 			$(document).ready(function() {
-				$('#myEtf').change(function() {
+				$('#my_etf').change(function() {
 					$.ajax({
 						type: 'GET',
 						url: 'impliedvolatilityhandler.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 	'strike':$('#strike').val()},
+						data: {'etf':$('#my_etf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 	'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg); // write output to the #result div
 						} 
@@ -199,8 +206,8 @@
 			});
 		</script>
 		
-		<!--- ajax call to 'impliedvolatilityhandler.php' to generate delta hedging output without reloading the page --->
-		<!--- updates delta hedging output as user changes strike --->
+		<!--- ajax call to 'impliedvolatilityhandler.php' calculate implied volatility without reloading the page --->
+		<!--- updates implied volatility as user changes strike --->
 		<script>
 			// call php
 			$(document).ready(function() {
@@ -209,7 +216,7 @@
 					$.ajax({
 						type: 'GET',
 						url: 'impliedvolatilityhandler.php',
-						data: {'etf':$('#myEtf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
+						data: {'etf':$('#my_etf').val(), 'expiry':$('#expiry').val(), 'premium':$('#premium').val(), 'strike':$('#strike').val()},
 						success: function(msg) {
 							$('#result').html(msg);	// write output to the #result div					
 						}
@@ -228,15 +235,6 @@
 			    trigger: 'hover',
 			        'placement': 'left'
 			});
-			
-			
-			$('#popup_static').tooltip({
-			    'show': true,
-			        'placement': 'bottom',
-			        'title': "Please remember to..."
-			});
-			
-			$('#popup_static').tooltip('show');
 		</script>
 
 	</body> <!--- END BODY --->  
