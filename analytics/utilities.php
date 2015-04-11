@@ -37,6 +37,19 @@
 	}
 	
 	/*
+	 * checks whether expiry entered by user is on or before 1/2/2014
+	 */
+	function is_valid_expiry($expiry) {
+		$spot_date = '2014-01-02';
+		if (strtotime($expiry) <= strtotime($spot_date)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	
+	/*
 	 * converts a date from "mm/dd/yyyy" into yyyymmdd
 	 */
 	function format_expiry($expiry) {
