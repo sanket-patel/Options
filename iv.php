@@ -106,7 +106,7 @@
 				});
 		</script>
 		
-		<!--- dynamically update the ETF label in the output section when the input is changed --->
+		<!--- dynamically update the PREMIUM label in the output section when the input is changed --->
 		<script>
 			// premium changes
 			$('#premium').change(function() {
@@ -193,7 +193,7 @@
 							$('#result').html(msg); // write output to the #result div
 						} 
 					});
-				});
+				});		
 			});
 		</script>
 		
