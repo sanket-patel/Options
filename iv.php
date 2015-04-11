@@ -120,7 +120,7 @@
 			$('#strike').change(function() {
 				// make display strike as positive
 				// convert negative strike into postive in php script
-				jQuery('#strike_entered').text(Math.abs($('#strike').val()));
+				jQuery('#strike_entered').text($('#strike').val());
 				});
 		</script>
 		

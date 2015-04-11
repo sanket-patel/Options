@@ -126,7 +126,7 @@
 		<script>
 			// strike
 			$('#strike').change(function() {
-				jQuery('#strike_entered').text(Math.abs($('#strike').val()));
+				jQuery('#strike_entered').text($('#strike').val());
 			});
 		</script>
 		
@@ -148,25 +148,14 @@
 			// call php
 			$(document).ready(function() {
 				$('#impliedvol').change(function() {
-					
-					var v = $('#impliedvol').val().replace('%','');
-					if (v < 0) {
-						alert('Volatility must be positive.  Defaulting to 20%.');
-						//$('#impliedVol').val('20%');
-						$('#implied_vol_entered').text('20%');
-					} else {
-						//alert('we are ok');
-						jQuery('#implied_vol_entered').text($('#impliedvol').val());
-						// here
-						$.ajax({
-							type: 'GET',
-							url: 'deltahedginghandler.php',
-							data: {'etf':$('#my_etf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(), 'strike':$('#strike').val()},
-							success: function(msg) {
-								$('#result').html(msg); // write output to the #result div
-							} 
-						});
-					}
+					$.ajax({
+						type: 'GET',
+						url: 'deltahedginghandler.php',
+						data: {'etf':$('#my_etf').val(), 'expiry':$('#expiry').val(), 'impliedvol':$('#impliedvol').val(),  'strike':$('#strike').val()},
+						success: function(msg) {
+							$('#result').html(msg); // write output to the #result div
+						} 
+					});
 				});
 			});
 		</script>
