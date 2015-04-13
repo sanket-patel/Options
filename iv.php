@@ -124,6 +124,22 @@
 				});
 		</script>
 		
+		<script>
+			// update spot when etf changes
+			$(document).ready(function() {
+				$('#my_etf').change(function() {
+					$.ajax({
+						type: 'GET',
+						url: 'getspot.php',
+						data: {'etf':$('#my_etf').val()},
+						success: function(msg) {
+							$('#spot').html(msg); // write output to the #result div
+						} 
+					});
+				});		
+			});
+		</script>
+		
 		<!--- dynamically update the ETF label in the output section when drop down changes --->
 		<script type='text/javascript'>
 			// etfs changes
@@ -134,7 +150,7 @@
 			        jQuery('#etf_selected').text($('#my_etf').val());
 			    });
 			});
-			</script>
+		</script>
 			
 		<!--- set default of expiry labal in output section today's date --->
 		<script>
