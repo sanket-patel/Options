@@ -18,6 +18,8 @@
 		public $spot_date;
 		public $dcf;
 		public $dollar_delta;
+		//public $vega;
+		private $d1;
 		
 		/*
 		 * constructor
@@ -40,12 +42,12 @@
 		private function price_option() {
 			$this->dcf = (float)get_daycount_fraction($this->spot_date, $this->expiry);
 			$this->price = (float)bs_price($this->spot, $this->strike, $this->rate, $this->sigma, $this->dcf);
-			$this->delta = (float)bs_delta($this->spot, $this->strike, $this->rate, $this->sigma, $this->dcf);
+			$this->d1 = (float)get_d1($this->spot, $this->strike, $this->rate, $this->sigma, $this->dcf);
+			//$this->delta = (float)bs_delta($this->spot, $this->strike, $this->rate, $this->sigma, $this->dcf);
+			$this->delta = (float)bs_delta_from_d1($this->d1);
+			//$this->vega = (float)bs_vega($this->spot, $this->d1, $this->dcf);
 			$this->dollar_delta = $this->delta * $this->spot;
 		}
-		
 	}
 	
-		
-
 ?>
