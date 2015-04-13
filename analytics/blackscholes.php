@@ -36,6 +36,10 @@
     	return $nd1;
 	}
 	
+	function bs_delta_from_d1($d1) {
+		return cdf($d1);
+	}
+	
 	/*
 	 * implements simple version of newton-raphson solver
 	 * converges quickly but has trouble dealing with deep ITM and OTM options
@@ -43,6 +47,8 @@
 	 * the implied vol estimate to blow up
 	 */ 
 	function newton_raphson($market_price, $strike, $spot, $dcf, $rate) {
+		
+		include('analytics/eurooption.php');
 				
     	$tolerance = 0.000000000001;
     	$sigma = 1.0;	// initial guess
@@ -67,6 +73,9 @@
 	    		// since we exited solver before finding a solution, display the result as a warning
 	    		return die('<a class="btn btn-danger>Solver failed to converge because max iterations reached</a>');
 			}
+			
+			// create options
+			//$option = new EuroOptionPosition($spot, $strike, )
 			
 			// we need d1 and vega because the objective function needs f'(x)
 			// which in this case is d(price)/d(vol)
