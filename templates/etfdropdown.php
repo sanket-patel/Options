@@ -9,7 +9,8 @@
 		    		<option>IWM</option>
 			    	<option>SPY</option>
 				</select>
-				<div id="spot_price"></div>
+				
+				<div id="spot"><br><h5><strong>Spot: </strong>65.9</h5></div>
 				<input type='hidden' id='hidden_etf' value=''>
 			</div> <!--- END panel-body --->
 	</div> <!--- END panel for etf dropdown--->
