@@ -99,6 +99,22 @@
 			</div> <!--- END panel for output --->
 		</div> <!--- END container --->
 		
+		<script>
+			// update spot when etf changes
+			$(document).ready(function() {
+				$('#my_etf').change(function() {
+					$.ajax({
+						type: 'GET',
+						url: 'getspot.php',
+						data: {'etf':$('#my_etf').val()},
+						success: function(msg) {
+							$('#spot').html(msg); // write output to the #result div
+						} 
+					});
+				});		
+			});
+		</script>
+		
 		<!--- set default of expiry labal in output section today's date --->
 		<script>
 			$(document).ready(function() {
